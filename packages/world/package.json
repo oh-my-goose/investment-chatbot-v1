@@ -1,0 +1,16 @@
+{
+  "name": "@llama-flock/world",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@llama-flock/hello": "^1.0.0"
+  }
+}
