@@ -1,5 +1,5 @@
 {
-  "name": "@llama-flock/-core",
+  "name": "@llama-flock/chatbot-core",
   "version": "0.0.1",
   "description": "The chatbot powered by LLM",
   "main": "index.js",

@@ -51,7 +51,8 @@
     "packages/hello",
     "packages/world",
     "packages/common-utils",
-    "packages/sandbox-01"
+    "packages/sandbox-01",
+    "packages/chatbot-core"
   ],
   "dependencies": {
     "langchain": "^0.0.154"
