@@ -6,7 +6,9 @@
   "scripts": {
     "build": "nx run-many --targets build --parallel --output-style=stream",
     "test": "nx run-many --targets test --parallel --output-style=stream",
-    "pkg-new": " function pkg-new { npm init -w 'packages/'$1; } pkg-new"
+    "build-one": "function build_one { nx build '@llama-flock/'$1 ; }; build_one",
+    "test-one": "function test_one { nx test '@llama-flock/'$1 ; }; test_one",
+    "pkg-new": " function pkg_new { npm init -w 'packages/'$1; } pkg_new"
   },
   "repository": {
     "type": "git",
