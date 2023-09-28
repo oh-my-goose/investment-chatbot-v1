@@ -10,10 +10,6 @@
     "test-one": "function test_one { nx test '@llama-flock/'$1 ; }; test_one",
     "pkg-new": " function pkg_new { npm init -w 'packages/'$1; } pkg_new"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@bitbucket.org/chintown/llama-flock.git"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
