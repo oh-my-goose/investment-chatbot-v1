@@ -7,7 +7,7 @@
     "watch": "nx watch --all -- echo \\$NX_PROJECT_NAME",
     "list-projects": "grep '\"packages/' package.json | grep -v 'list-projects'",
     "list-projects-csv": "npm run list-projects | grep -v '>' | awk NF | awk -F'\"' '{print $2}' | xargs -I{} basename {} | sed 's/^/@llama-flock\\//' | tr '\\n' ',' | sed 's/.$//'",
-    "build": "nx run-many --targets build --parallel --output-style=stream --projects=$(npm run list-projects-csv | grep -v '>' | awk NF)",
+    "build": "./scripts/build.sh",
     "test": "nx run-many --targets test --parallel --output-style=stream",
     "run-one": "function run_one { nx $1 '@llama-flock/'$2 ; }; run_one",
     "build-one": "npm run run-one build",

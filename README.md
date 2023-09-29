@@ -60,7 +60,8 @@ file, simply run `bun my.ts`.
 ## Recipe
 
 - ensure dependency: `npm i`
-- build all packages: `npm run build`
+- build all packages: `(USE=nx) npm run build`
+  - as `nx` setup requires incremental improvements, consider fallback to `npm`: `USE=npm npm run build`
 - test all packages: `npm run test`
 - build one packages: `npm run build-one <project-folder-name>`
 - test one packages: `npm run test-one <project-folder-name>`
