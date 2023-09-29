@@ -55,3 +55,13 @@ without the hassle to build them manually.
 
 If you really want to take the shortcut, you can install the [Bun](https://bun.sh/) runtime globally, separated from this package. When you need to execute a TypeScript
 file, simply run `bun my.ts`.
+
+
+## Recipe
+
+- ensure dependency: `npm i`
+- build all packages: `npm run build`
+- test all packages: `npm run test`
+- build one packages: `npm run build-one <project-folder-name>`
+- test one packages: `npm run test-one <project-folder-name>`
+- run custom script on one packages: `npm run run-one <script-name> <project-folder-name>`
