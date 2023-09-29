@@ -4,11 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "nx run-many --targets build --parallel --output-style=stream --projects=hello,world",
+    "watch": "nx watch --all -- echo \\$NX_PROJECT_NAME",
+    "list-projects": "grep '\"packages/' package.json | grep -v 'list-projects'",
+    "list-projects-csv": "npm run list-projects | grep -v '>' | awk NF | awk -F'\"' '{print $2}' | xargs -I{} basename {} | sed 's/^/@llama-flock\\//' | tr '\\n' ',' | sed 's/.$//'",
+    "build": "nx run-many --targets build --parallel --output-style=stream --projects=$(npm run list-projects-csv | grep -v '>' | awk NF)",
     "test": "nx run-many --targets test --parallel --output-style=stream",
-    "build-one": "function build_one { nx build '@llama-flock/'$1 ; }; build_one",
-    "test-one": "function test_one { nx test '@llama-flock/'$1 ; }; test_one",
-    "pkg-new": " function pkg_new { npm init -w 'packages/'$1; } pkg_new"
+    "run-one": "function run_one { nx $1 '@llama-flock/'$2 ; }; run_one",
+    "build-one": "npm run run-one build",
+    "test-one": "npm run run-one test",
+    "pkg-new": " function pkg_new { npm init -w 'packages/'$1; }; pkg_new"
   },
   "keywords": [],
   "author": "",
@@ -27,7 +31,9 @@
   },
   "workspaces": [
     "packages/hello",
-    "packages/world"
+    "packages/world",
+    "packages/common-utils",
+    "packages/sandbox-01"
   ],
   "dependencies": {
     "langchain": "^0.0.154"

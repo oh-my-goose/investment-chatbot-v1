@@ -5,6 +5,5 @@ export function world() {
 }
 
 export function helloWorld() {
-  hello()
-  world()
+  return `${hello()} ${world()}!!`
 }
