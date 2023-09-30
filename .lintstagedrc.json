@@ -1,0 +1,6 @@
+{
+  "*.{js,ts}": [
+    "prettier --write --ignore-path .eslintignore",
+    "eslint   --fix . --ignore-path .eslintignore --config .eslintrc.js"
+  ]
+}
