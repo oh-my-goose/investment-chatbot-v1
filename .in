@@ -1,2 +1,2 @@
 nvm use 18
-NO_CZ=true
+export NO_CZ=true

@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-if [ ! -z ${NO_CZ:-} ]; then
-  exit 0
+if [ -z ${NO_CZ} ]; then
+  exec < /dev/tty && npx cz --hook || true
 fi
 
-exec < /dev/tty && npx cz --hook || true
+
