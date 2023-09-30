@@ -14,9 +14,9 @@
     "test:one": "npm run run-one test",
     "pkg-new": " function pkg_new { npm init -w 'packages/'$1; }; pkg_new",
     "prepare": "husky install",
-    "cz": "cz",
-    "lint": "eslint .",
-    "lint:fix": "eslint --fix ."
+    "commit:message": "cz",
+    "lint": "eslint --fix .",
+    "format": "npx prettier --write --ignore-path .eslintignore ."
   },
   "keywords": [],
   "author": "",

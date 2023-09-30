@@ -17,6 +17,6 @@ export class Actionable implements Reasonable {
   }
 
   action: ActionMethod = async (llm: OpenAI<OpenAICallOptions>) => {
-    return 'TODO  ';
+    return 'Implement me'; // TODO Implement me
   };
 }

@@ -20,6 +20,6 @@ export class Questionable implements Reasonable {
   }
 
   reason: ReasonMethod = async (llm: OpenAI<OpenAICallOptions>) => {
-    throw new Error('TODO');
+    throw new Error('TODO'); // TODO implement me
   };
 }

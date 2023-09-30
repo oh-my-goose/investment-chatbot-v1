@@ -1,4 +1,3 @@
 export interface Reasonable {
-
-  readonly depth: number
+  readonly depth: number;
 }

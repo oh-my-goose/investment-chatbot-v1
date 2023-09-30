@@ -1,2 +1,2 @@
 ## linting
-- eslint
+[x] eslint
