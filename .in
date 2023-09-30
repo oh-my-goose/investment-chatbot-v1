@@ -1,1 +1,2 @@
 nvm use 18
+NO_CZ=true
