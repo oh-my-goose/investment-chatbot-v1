@@ -1,0 +1,7 @@
+build
+node_modules
+dist
+**/*.d.ts
+**/*.md
+jest.config.js
+.eslintrc.js

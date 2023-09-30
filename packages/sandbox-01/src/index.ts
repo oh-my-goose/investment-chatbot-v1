@@ -11,5 +11,7 @@ const llm = new OpenAI({
   console.log({ input });
   const output = await llm.predict(input);
   console.log({output})
-}())
+}()).catch(e => {
+  throw e
+})
 
