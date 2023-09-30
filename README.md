@@ -61,8 +61,11 @@ file, simply run `bun my.ts`.
 
 - ensure dependency: `npm i`
 - build all packages: `(USE=nx) npm run build`
-  - as `nx` setup requires incremental improvements, consider fallback to `npm`: `USE=npm npm run build`
+  - as our `nx` setup requires incremental improvements, consider fallback to `npm`: `USE=npm npm run build`
 - test all packages: `npm run test`
-- build one packages: `npm run build-one <project-folder-name>`
-- test one packages: `npm run test-one <project-folder-name>`
-- run custom script on one packages: `npm run run-one <script-name> <project-folder-name>`
+- build one packages: `npm run build:one <project-folder-name>`
+- test one packages: `npm run test:one <project-folder-name>`
+- run custom script on one packages: `npm run run:one <script-name> <project-folder-name>`
+- for actions on one package, alternatively, you can `cd packages/<project-folder-name>; npm run <script-name>`
+- fix code with best practice by linting: `npm run lint`
+- reformat code with formatting by prettier: `npm run format`
