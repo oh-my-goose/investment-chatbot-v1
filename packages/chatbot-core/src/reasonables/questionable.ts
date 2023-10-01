@@ -76,7 +76,9 @@ export class Questionable implements Reasonable {
       const answerAndQuestions: Reasonable[] = [
         new Actionable({
           depth: this.depth + 1,
-          queries: [], // TODO: Implement this
+          // TODO(https://github.com/oh-my-goose/investment-chatbot/issues/7):
+          //  Implement this
+          queries: [],
           answer: completion.answer,
         }),
       ];
@@ -93,7 +95,8 @@ export class Questionable implements Reasonable {
 
       return answerAndQuestions;
     } catch (error) {
-      // TODO: Log on crashlytics service?
+      // TODO(https://github.com/oh-my-goose/investment-chatbot/issues/8):
+      //  Log on crashlytics service?
       console.error(error);
 
       return [];
