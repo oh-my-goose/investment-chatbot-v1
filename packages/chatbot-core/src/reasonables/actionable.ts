@@ -30,11 +30,13 @@ export class Actionable implements Reasonable {
     config: ReasoningConfig,
   ): Promise<Completion> {
     if (this.answer === null) {
-      // TODO: Will use Langchain Router feature for null answer!
+      // TODO(https://github.com/oh-my-goose/investment-chatbot/issues/):
+      //  Will use Langchain Router feature for null answer!
       throw new Error(`WIP`);
     } else {
       return new Completion(
-        // TODO: Fix query traces.
+        // TODO(https://github.com/oh-my-goose/investment-chatbot/issues/7):
+        //  Fix query traces.
         [],
         this.answer,
       );
