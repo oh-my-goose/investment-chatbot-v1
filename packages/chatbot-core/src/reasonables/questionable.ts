@@ -109,7 +109,8 @@ export class Questionable implements Reasonable {
    * @returns An actionable that may or may not have the answer.
    */
   private async answerDeterministically(query: string): Promise<Actionable> {
-    // TODO: Get answer from LLM
+    // TODO(https://github.com/oh-my-goose/investment-chatbot/issues/10):
+    //  Get answer from LLM
     return new Actionable({
       depth: this.depth + 1,
       queries: [...this.previousQueries, query],
