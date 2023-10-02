@@ -44,8 +44,8 @@ export class Reasoner {
     while (queue.length > 0) {
       const node = queue.shift()!;
 
-      // TODO: Keep track of the query trace
-      //   queryTrace
+      // TODO(https://github.com/oh-my-goose/investment-chatbot/issues/7):
+      //  Keep track of the query trace
 
       // TODO: Can we parallelize the questions based on depth?
       const reasonables = await node.question(this.config);
