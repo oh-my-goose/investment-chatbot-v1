@@ -4,6 +4,7 @@ import { Completion } from './completion';
 import { ReasoningConfig } from './configs';
 import { Actionable } from './reasonables/actionable';
 import { Questionable } from './reasonables/questionable';
+import { LLM } from './llm';
 
 /**
  * Reasoner that takes a user question and output a compltion list. The output
@@ -21,9 +22,11 @@ export class Reasoner {
 
   constructor(
     config: ReasoningConfig = {
-      llm: new OpenAI({
-        openAIApiKey: getApiKeySafely(),
-        temperature: 0.7,
+      llm: new LLM({
+        openAI: new OpenAI({
+          openAIApiKey: getApiKeySafely(),
+          temperature: 0.7,
+        }),
       }),
       maxExploreDepth: 3,
     },
@@ -39,7 +42,7 @@ export class Reasoner {
     const completions: Completion[] = [];
 
     // Explore resolution graph (BFS)
-    const queue: Questionable[] = [new Questionable({ query, previousQueries: [], depth: 0 })];
+    const queue: Questionable[] = [new Questionable({ llm: this.config.llm, query, previousQueries: [], depth: 0 })];
     const visited: Set<string> = new Set([query]);
     while (queue.length > 0) {
       const node = queue.shift()!;

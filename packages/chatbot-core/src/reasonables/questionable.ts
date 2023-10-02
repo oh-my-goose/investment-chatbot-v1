@@ -5,13 +5,13 @@ import { ReasoningConfig } from '../configs';
 import { BEING_CURIOUS_PROMPT, FINANCIAL_ADVISOR_PROMPT, FRIENDLY_WORDS_PROMPT } from '../prompts';
 import { Reasonable } from '../reasonable';
 import { Actionable } from './actionable';
-
-interface AnswerAndFollowUps {
-  readonly answer: string;
-  readonly next_questions: string[];
-}
+import { LLM } from '../llm';
 
 interface QuestionableParams {
+  /**
+   * Our own Large Language Model abstraction.
+   */
+  llm: LLM;
   /**
    * The new question for LLM.
    */
@@ -28,11 +28,13 @@ interface QuestionableParams {
 }
 
 export class Questionable implements Reasonable {
+  readonly llm: LLM;
   readonly query: string;
   readonly previousQueries: string[];
   readonly depth: number;
 
-  constructor({ query, previousQueries, depth }: QuestionableParams) {
+  constructor({ llm, query, previousQueries, depth }: QuestionableParams) {
+    this.llm = llm;
     this.query = query;
     this.previousQueries = previousQueries;
     this.depth = depth;
@@ -43,7 +45,7 @@ export class Questionable implements Reasonable {
     const questionQuota = maxExploreDepth - this.depth;
 
     if (questionQuota > 0) {
-      const completion = await this.answerAndFollowUp(llm, questionQuota);
+      const completion = await this.answerAndFollowUp(questionQuota);
 
       return completion;
     } else {
@@ -58,19 +60,10 @@ export class Questionable implements Reasonable {
    *
    * @returns The answer and follow-up questions.
    */
-  private async answerAndFollowUp(llm: OpenAI, questionQuota: number): Promise<Reasonable[]> {
-    const systemPrompt = SystemMessagePromptTemplate.fromTemplate(
-      [FINANCIAL_ADVISOR_PROMPT, FRIENDLY_WORDS_PROMPT].join('\n'),
-    );
-    const userPrompt = HumanMessagePromptTemplate.fromTemplate(BEING_CURIOUS_PROMPT(questionQuota, this.query));
-    const combinedPrompt = ChatPromptTemplate.fromMessages([systemPrompt, userPrompt]);
-
+  private async answerAndFollowUp(questionQuota: number): Promise<Reasonable[]> {
     try {
-      const chain = new LLMChain({ llm, prompt: combinedPrompt });
-      const rawCompletion: string = await chain.run({});
-
       // Parse completion JSON
-      const completion = JSON.parse(rawCompletion) as AnswerAndFollowUps;
+      const completion = await this.llm.answerAsCuriousFinanicalAdvisor(this.query, questionQuota);
 
       // Extract the deterministic answer...
       const answerAndQuestions: Reasonable[] = [
@@ -86,6 +79,7 @@ export class Questionable implements Reasonable {
       for (const question of completion.next_questions) {
         answerAndQuestions.push(
           new Questionable({
+            llm: this.llm,
             query: question,
             previousQueries: [...this.previousQueries, this.query],
             depth: this.depth + 1,
