@@ -25,7 +25,7 @@ export class LLM {
     this.openAI = llm;
   }
 
-  async answerAsCuriousFinanicalAdvisor(query: string, questionQuota: number): Promise<AnswerAndFollowUps> {
+  async answerAsCuriousFinancialAdvisor(query: string, questionQuota: number): Promise<AnswerAndFollowUps> {
     const systemPrompt = SystemMessagePromptTemplate.fromTemplate(
       [FINANCIAL_ADVISOR_PROMPT, FRIENDLY_WORDS_PROMPT].join('\n'),
     );

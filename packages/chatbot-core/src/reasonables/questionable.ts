@@ -1,11 +1,7 @@
-import { LLMChain } from 'langchain/chains';
-import { OpenAI } from 'langchain/llms/openai';
-import { ChatPromptTemplate, HumanMessagePromptTemplate, SystemMessagePromptTemplate } from 'langchain/prompts';
 import { ReasoningConfig } from '../configs';
-import { BEING_CURIOUS_PROMPT, FINANCIAL_ADVISOR_PROMPT, FRIENDLY_WORDS_PROMPT } from '../prompts';
+import { LLM } from '../llm';
 import { Reasonable } from '../reasonable';
 import { Actionable } from './actionable';
-import { LLM } from '../llm';
 
 interface QuestionableParams {
   /**
@@ -43,15 +39,14 @@ export class Questionable implements Reasonable {
   public async question(config: ReasoningConfig): Promise<Reasonable[]> {
     const { llm, maxExploreDepth } = config;
     const questionQuota = maxExploreDepth - this.depth;
-
-    if (questionQuota > 0) {
+    if (questionQuota > 1) {
       const completion = await this.answerAndFollowUp(questionQuota);
 
       return completion;
     } else {
-      const compltion = await this.answerDeterministically(this.query);
+      const completion = await this.answerDeterministically(this.query);
 
-      return [compltion];
+      return [completion];
     }
   }
 
@@ -63,7 +58,7 @@ export class Questionable implements Reasonable {
   private async answerAndFollowUp(questionQuota: number): Promise<Reasonable[]> {
     try {
       // Parse completion JSON
-      const completion = await this.llm.answerAsCuriousFinanicalAdvisor(this.query, questionQuota);
+      const completion = await this.llm.answerAsCuriousFinancialAdvisor(this.query, questionQuota);
 
       // Extract the deterministic answer...
       const answerAndQuestions: Reasonable[] = [
@@ -108,7 +103,7 @@ export class Questionable implements Reasonable {
     return new Actionable({
       depth: this.depth + 1,
       queries: [...this.previousQueries, query],
-      answer: null,
+      answer: 'deterministic answer',
     });
   }
 }

@@ -10,8 +10,8 @@
     "build": "./scripts/build.sh",
     "test": "nx run-many --targets test --parallel --output-style=stream",
     "run:one": "function run_one { nx $1 '@llama-flock/'$2 ; }; run_one",
-    "build:one": "npm run run-one build",
-    "test:one": "npm run run-one test",
+    "build:one": "npm run run:one build",
+    "test:one": "npm run run:one test",
     "pkg-new": " function pkg_new { npm init -w 'packages/'$1; }; pkg_new",
     "prepare": "husky install",
     "commit:message": "cz",
@@ -55,7 +55,8 @@
     "packages/chatbot-core"
   ],
   "dependencies": {
-    "langchain": "^0.0.154"
+    "langchain": "^0.0.154",
+    "pretty-format": "^29.7.0"
   },
   "config": {
     "commitizen": {

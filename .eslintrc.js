@@ -9,6 +9,7 @@ module.exports = {
   rules: {
     '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/require-await': 'off',
+    '@typescript-eslint/no-unsafe-assignment': 'off',
   },
   parser: '@typescript-eslint/parser',
   parserOptions: {
