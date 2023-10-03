@@ -69,3 +69,9 @@ file, simply run `bun my.ts`.
 - for actions on one package, alternatively, you can `cd packages/<project-folder-name>; npm run <script-name>`
 - fix code with best practice by linting: `npm run lint`
 - reformat code with formatting by prettier: `npm run format`
+
+
+## Project practice
+
+- apply (commitizen)[https://commitizen-tools.github.io/commitizen/] in writing commit messages
+  - if you've built the muscle memory, you can opt-out the commit hook, by running `export NO_CZ=true`
