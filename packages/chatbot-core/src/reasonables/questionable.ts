@@ -11,11 +11,11 @@ interface QuestionableParams {
     /**
      * The new question for LLM.
      */
-    readonly query: string;
+    readonly ask: string;
     /**
      * The previous questions for LLM.
      */
-    readonly previousQueries: string[];
+    readonly queries: string[];
     /**
      * Step number of follow-up questions from the root question.
      * Note: This is 1-based.
@@ -25,14 +25,14 @@ interface QuestionableParams {
 
 export class Questionable implements Reasonable {
     readonly llm: LLM;
-    readonly query: string;
-    readonly previousQueries: string[];
+    readonly ask: string;
+    readonly queries: string[];
     readonly depth: number;
 
-    constructor({ llm, query, previousQueries, depth }: QuestionableParams) {
+    constructor({ llm, ask, queries, depth }: QuestionableParams) {
         this.llm = llm;
-        this.query = query;
-        this.previousQueries = previousQueries;
+        this.ask = ask;
+        this.queries = queries;
         this.depth = depth;
     }
 
@@ -46,7 +46,7 @@ export class Questionable implements Reasonable {
 
             return reasonables;
         } else {
-            const reasonable: Reasonable = await this.answerDeterministically(this.query);
+            const reasonable: Reasonable = await this.answerDeterministically();
 
             return [reasonable];
         }
@@ -58,9 +58,10 @@ export class Questionable implements Reasonable {
      * @returns The answer and follow-up questions.
      */
     private async answerAndFollowUp(questionQuota: number): Promise<Reasonable[]> {
+        const queries = [...this.queries, this.ask];
         try {
             // Parse completion JSON
-            const completion = await this.llm.answerAsCuriousFinancialAdvisor(this.query, questionQuota);
+            const completion = await this.llm.answerAsCuriousFinancialAdvisor(this.ask, questionQuota);
 
             // Extract the deterministic answer...
             const answerAndQuestions: Reasonable[] = [
@@ -68,7 +69,7 @@ export class Questionable implements Reasonable {
                     depth: this.depth + 1,
                     // TODO(https://github.com/oh-my-goose/investment-chatbot/issues/7):
                     //  Implement this
-                    queries: [],
+                    queries,
                     answer: completion.answer,
                 }),
             ];
@@ -77,8 +78,8 @@ export class Questionable implements Reasonable {
                 answerAndQuestions.push(
                     new Questionable({
                         llm: this.llm,
-                        query: question,
-                        previousQueries: [...this.previousQueries, this.query],
+                        ask: question,
+                        queries,
                         depth: this.depth + 1,
                     }),
                 );
@@ -99,12 +100,13 @@ export class Questionable implements Reasonable {
      *
      * @returns An actionable that may or may not have the answer.
      */
-    private async answerDeterministically(query: string): Promise<Actionable> {
+    private async answerDeterministically(): Promise<Actionable> {
+        const queries = [...this.queries, this.ask];
         // TODO(https://github.com/oh-my-goose/investment-chatbot/issues/10):
         //  Get answer from LLM
         return new Actionable({
             depth: this.depth + 1,
-            queries: [...this.previousQueries, query],
+            queries,
             answer: 'deterministic answer',
         });
     }
