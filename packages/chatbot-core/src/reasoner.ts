@@ -2,9 +2,9 @@ import { getApiKeySafely } from '@llama-flock/common-utils';
 import { OpenAI } from 'langchain/llms/openai';
 import { Completion } from './completion';
 import { ReasoningConfig } from './configs';
+import { LLM } from './llm';
 import { Actionable } from './reasonables/actionable';
 import { Questionable } from './reasonables/questionable';
-import { LLM } from './llm';
 
 /**
  * Reasoner that takes a user question and output a compltion list. The output
@@ -57,7 +57,6 @@ export class Reasoner {
           if (visited.has(reasonable.query)) {
             continue;
           }
-
           queue.push(reasonable);
           visited.add(reasonable.query);
         } else if (reasonable instanceof Actionable) {
