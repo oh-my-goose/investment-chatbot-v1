@@ -32,7 +32,9 @@ export class Reasoner {
         },
     ) {
         if (config.maxExploreDepth < 1) {
-            throw new Error(`Invalid maxExploreDepth(=${config.maxExploreDepth}), which must be greater than 1`);
+            throw new Error(
+                `Invalid maxExploreDepth(=${config.maxExploreDepth}), which must be greater than or equal to 1`,
+            );
         }
 
         this.config = config;
@@ -43,7 +45,7 @@ export class Reasoner {
 
         // Explore resolution graph (BFS)
         const queue: Questionable[] = [
-            new Questionable({ llm: this.config.llm, query, previousQueries: [], depth: 0 }),
+            new Questionable({ llm: this.config.llm, query, previousQueries: [], depth: 1 }),
         ];
         const visited: Set<string> = new Set([query]);
         while (queue.length > 0) {

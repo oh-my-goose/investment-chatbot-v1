@@ -18,7 +18,7 @@ interface QuestionableParams {
     readonly previousQueries: string[];
     /**
      * Step number of follow-up questions from the root question.
-     * Note: This is 0-based.
+     * Note: This is 1-based.
      */
     readonly depth: number;
 }
@@ -38,9 +38,10 @@ export class Questionable implements Reasonable {
 
     public async question(config: ReasoningConfig): Promise<Reasonable[]> {
         const { maxExploreDepth } = config;
-        const questionQuota = maxExploreDepth - this.depth;
+        const remainingDepth = maxExploreDepth - this.depth;
 
-        if (questionQuota > 1) {
+        if (remainingDepth > 0) {
+            const questionQuota = remainingDepth + 1;
             const reasonables: Reasonable[] = await this.answerAndFollowUp(questionQuota);
 
             return reasonables;
