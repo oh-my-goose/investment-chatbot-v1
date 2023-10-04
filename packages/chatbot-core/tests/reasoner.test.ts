@@ -19,6 +19,7 @@ mockedLlmEntry.mockImplementation((query, questionQuota) => {
 describe(`Reasoner`, () => {
     const INITIAL_QUESTION = 'question';
     const DETERMINISTIC_ANSWER = 'deterministic answer';
+
     it(`should answer deterministically if max depth is 1`, async () => {
         const maxExploreDepth = 1;
         const config: ReasoningConfig = {
@@ -33,6 +34,7 @@ describe(`Reasoner`, () => {
 
         expect(completions.map(({ completion }) => completion)).toEqual(expected);
     });
+
     it(`should answer with questions if max depth is 2`, async () => {
         const maxExploreDepth = 2;
         const config: ReasoningConfig = {
@@ -48,6 +50,7 @@ describe(`Reasoner`, () => {
 
         expect(completions.map(({ completion }) => completion)).toEqual(expected);
     });
+
     it(`should answer with questions if max depth is 3`, async () => {
         const maxExploreDepth = 3;
         const config: ReasoningConfig = {
