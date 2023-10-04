@@ -4,4 +4,5 @@ dist
 **/*.d.ts
 **/*.md
 jest.config.js
+commitlint.config.js
 .eslintrc.js
