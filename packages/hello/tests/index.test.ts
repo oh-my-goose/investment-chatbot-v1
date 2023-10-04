@@ -1,7 +1,7 @@
 import { hello } from '../src';
 
 describe('hello', () => {
-  it('should output', () => {
-    expect(`${hello()}`).toBe('hello');
-  });
+    it('should output', () => {
+        expect(`${hello()}`).toBe('hello');
+    });
 });

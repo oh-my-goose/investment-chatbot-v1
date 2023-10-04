@@ -1,22 +1,22 @@
 {
-  "name": "@llama-flock/chatbot-core",
-  "version": "0.0.1",
-  "description": "The chatbot powered by LLM",
-  "main": "index.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "build": "tsc",
-    "test": "jest"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "ts-jest": "^29.1.1",
-    "typescript": "^5.2.2"
-  },
-  "dependencies": {
-    "jest": "^29.7.0",
-    "@llama-flock/common-utils": "^1.0.0"
-  }
+    "name": "@llama-flock/chatbot-core",
+    "version": "0.0.1",
+    "description": "The chatbot powered by LLM",
+    "main": "index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsc",
+        "test": "jest"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "ts-jest": "^29.1.1",
+        "typescript": "^5.2.2"
+    },
+    "dependencies": {
+        "jest": "^29.7.0",
+        "@llama-flock/common-utils": "^1.0.0"
+    }
 }

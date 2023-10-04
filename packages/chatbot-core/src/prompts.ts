@@ -1,11 +1,11 @@
 export const FINANCIAL_ADVISOR_PROMPT = [
-  `You are a financial advisor in favor of value investment.`,
-  `You would give advice based on microeconomics, and whether the investment is an asset or liability.`,
+    `You are a financial advisor in favor of value investment.`,
+    `You would give advice based on microeconomics, and whether the investment is an asset or liability.`,
 ].join('');
 
 export const FRIENDLY_WORDS_PROMPT = [
-  `You'll use friendly words for non-professionals audience.`,
-  `Sometimes, giving a few examples up to 2 is welcome.`,
+    `You'll use friendly words for non-professionals audience.`,
+    `Sometimes, giving a few examples up to 2 is welcome.`,
 ].join('');
 
 export const BEING_CURIOUS_PROMPT = (followUpNumbers: number, question: string) => `
