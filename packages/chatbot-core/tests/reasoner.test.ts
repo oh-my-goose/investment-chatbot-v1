@@ -72,4 +72,32 @@ describe(`Reasoner`, () => {
 
         expect(completions.map(({ completion }) => completion)).toEqual(expected);
     });
+    it(`should trace query history for each completion`, async () => {
+        const maxExploreDepth = 3;
+        const config: ReasoningConfig = {
+            maxExploreDepth,
+            llm,
+        };
+        // XXX probably not worth to auto gen these
+        const queriesOfDepth0 = [INITIAL_QUESTION];
+        const queriesOfDepth1 = [
+            [...queriesOfDepth0, 'question-q1'],
+            [...queriesOfDepth0, 'question-q2'],
+            [...queriesOfDepth0, 'question-q3'],
+        ];
+        const queriesOfDepth2 = [
+            [...queriesOfDepth1[0], 'question-q1-q1'],
+            [...queriesOfDepth1[0], 'question-q1-q2'],
+            [...queriesOfDepth1[1], 'question-q2-q1'],
+            [...queriesOfDepth1[1], 'question-q2-q2'],
+            [...queriesOfDepth1[2], 'question-q3-q1'],
+            [...queriesOfDepth1[2], 'question-q3-q2'],
+        ];
+        const expected = [queriesOfDepth0, ...queriesOfDepth1, ...queriesOfDepth2];
+
+        const reasoner = new Reasoner(config);
+        const completions = await reasoner.reason(INITIAL_QUESTION);
+
+        expect(completions.map(({ queries }) => queries)).toEqual(expected);
+    });
 });

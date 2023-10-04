@@ -42,25 +42,19 @@ export class Reasoner {
         const completions: Completion[] = [];
 
         // Explore resolution graph (BFS)
-        const queue: Questionable[] = [
-            new Questionable({ llm: this.config.llm, query, previousQueries: [], depth: 0 }),
-        ];
+        const queue: Questionable[] = [new Questionable({ llm: this.config.llm, ask: query, queries: [], depth: 0 })];
         const visited: Set<string> = new Set([query]);
         while (queue.length > 0) {
             const node = queue.shift()!;
-
-            // TODO(https://github.com/oh-my-goose/investment-chatbot/issues/7):
-            //  Keep track of the query trace
-
             // TODO: Can we parallelize the questions based on depth?
             const reasonables = await node.question(this.config);
             for (const reasonable of reasonables) {
                 if (reasonable instanceof Questionable) {
-                    if (visited.has(reasonable.query)) {
+                    if (visited.has(reasonable.ask)) {
                         continue;
                     }
                     queue.push(reasonable);
-                    visited.add(reasonable.query);
+                    visited.add(reasonable.ask);
                 } else if (reasonable instanceof Actionable) {
                     const completion = await reasonable.action(this.config);
                     completions.push(completion);

@@ -37,7 +37,7 @@ export class Actionable implements Reasonable {
             return new Completion(
                 // TODO(https://github.com/oh-my-goose/investment-chatbot/issues/7):
                 //  Fix query traces.
-                [],
+                this.queries,
                 this.answer,
             );
         }
