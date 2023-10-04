@@ -37,16 +37,17 @@ export class Questionable implements Reasonable {
     }
 
     public async question(config: ReasoningConfig): Promise<Reasonable[]> {
-        const { llm, maxExploreDepth } = config;
+        const { maxExploreDepth } = config;
         const questionQuota = maxExploreDepth - this.depth;
+
         if (questionQuota > 1) {
-            const completion = await this.answerAndFollowUp(questionQuota);
+            const reasonables: Reasonable[] = await this.answerAndFollowUp(questionQuota);
 
-            return completion;
+            return reasonables;
         } else {
-            const completion = await this.answerDeterministically(this.query);
+            const reasonable: Reasonable = await this.answerDeterministically(this.query);
 
-            return [completion];
+            return [reasonable];
         }
     }
 
