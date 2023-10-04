@@ -10,6 +10,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/require-await': 'off',
     '@typescript-eslint/no-unsafe-assignment': 'off',
+    '@typescript-eslint/padding-line-between-statements': 'error',
   },
   parser: '@typescript-eslint/parser',
   parserOptions: {
