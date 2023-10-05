@@ -75,6 +75,7 @@ describe(`Reasoner`, () => {
 
         expect(completions.map(({ completion }) => completion)).toEqual(expected);
     });
+
     it(`should trace query history for each completion`, async () => {
         const maxExploreDepth = 3;
         const config: ReasoningConfig = {
