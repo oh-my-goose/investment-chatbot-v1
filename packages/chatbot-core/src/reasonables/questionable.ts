@@ -65,7 +65,6 @@ export class Questionable implements Reasonable {
                     ask: this.ask,
                     queries,
                     depth: this.depth + 1,
-                    answer: completion.answer,
                 }),
             ];
             // followed by underlying questions
@@ -90,19 +89,14 @@ export class Questionable implements Reasonable {
     }
 
     /**
-     * Prompt LLM to give out deterministic answers.
-     *
-     * @returns An actionable that may or may not have the answer.
+     * @returns An actionable that will provider a deterministic answer.
      */
     private async answerDeterministically(_config: ReasoningConfig): Promise<Actionable> {
         const queries = [...this.queries, this.ask];
-        // TODO(https://github.com/oh-my-goose/investment-chatbot/issues/10):
-        //  Get answer from LLM
         return new Actionable({
             ask: this.ask,
             queries,
             depth: this.depth + 1,
-            answer: 'deterministic answer',
         });
     }
 }
