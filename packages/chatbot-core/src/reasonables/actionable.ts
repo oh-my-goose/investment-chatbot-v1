@@ -16,8 +16,6 @@ interface ActionableParams {
      * Note: This is 1-based.
      */
     readonly depth: number;
-
-    readonly answer: string;
 }
 
 export class Actionable implements Reasonable {
@@ -25,14 +23,12 @@ export class Actionable implements Reasonable {
     readonly queries: string[];
     readonly depth: number;
     // TODO: Enforce atomicity?
-    answer: string | null = null;
+    answer: string | null = 'deterministic answer';
 
-    constructor({ ask, queries, depth, answer }: ActionableParams) {
+    constructor({ ask, queries, depth }: ActionableParams) {
         this.ask = ask;
         this.depth = depth;
         this.queries = queries;
-
-        this.answer = answer;
     }
 
     public async action(

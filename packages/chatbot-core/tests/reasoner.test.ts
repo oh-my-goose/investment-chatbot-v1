@@ -41,7 +41,7 @@ describe(`Reasoner`, () => {
             maxExploreDepth,
             llm,
         };
-        const answerOfDepth0 = `${INITIAL_QUESTION}-ans`;
+        const answerOfDepth0 = DETERMINISTIC_ANSWER;
         const answerOfDepth1 = Array(2).fill(DETERMINISTIC_ANSWER);
         const expected = [answerOfDepth0, ...answerOfDepth1];
 
@@ -57,12 +57,8 @@ describe(`Reasoner`, () => {
             maxExploreDepth,
             llm,
         };
-        const answerOfDepth0 = `${INITIAL_QUESTION}-ans`;
-        const answerOfDepth1 = Array(3)
-            .fill(`${INITIAL_QUESTION}-q-ans`)
-            .map((a: string, idx) => {
-                return a.replace('-q-', `-q${idx + 1}-`);
-            });
+        const answerOfDepth0 = DETERMINISTIC_ANSWER;
+        const answerOfDepth1 = Array(3).fill(DETERMINISTIC_ANSWER);
         const answerOfDepth2 = [
             ...Array(2).fill(DETERMINISTIC_ANSWER),
             ...Array(2).fill(DETERMINISTIC_ANSWER),
