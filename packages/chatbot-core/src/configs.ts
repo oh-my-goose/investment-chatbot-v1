@@ -5,13 +5,15 @@ import { LLM } from './llm';
  */
 export interface ReasoningConfig {
     /**
-     * The OpenAI's LLM engine (via Langchain).
+     * Our own Large Language Model abstraction.
      */
-    readonly llm: LLM;
+    llm: LLM;
     /**
      * The knowledge exploration is traversing in a knowledge graph (or DAG). This
      * is a hard stop-condition that no more discovering beyond certain depth /
      * distance of progress.
      */
     readonly maxExploreDepth: number;
+
+    // TODO: Inject a factory method that could build Questionable and Actionable.
 }

@@ -5,10 +5,6 @@ import { Actionable } from './actionable';
 
 interface QuestionableParams {
     /**
-     * Our own Large Language Model abstraction.
-     */
-    llm: LLM;
-    /**
      * The new question for LLM.
      */
     readonly ask: string;
@@ -24,13 +20,11 @@ interface QuestionableParams {
 }
 
 export class Questionable implements Reasonable {
-    readonly llm: LLM;
     readonly ask: string;
     readonly queries: string[];
     readonly depth: number;
 
-    constructor({ llm, ask, queries, depth }: QuestionableParams) {
-        this.llm = llm;
+    constructor({ ask, queries, depth }: QuestionableParams) {
         this.ask = ask;
         this.queries = queries;
         this.depth = depth;
@@ -42,11 +36,11 @@ export class Questionable implements Reasonable {
 
         if (remainingDepth > 0) {
             const questionQuota = remainingDepth + 1;
-            const reasonables: Reasonable[] = await this.answerAndFollowUp(questionQuota);
+            const reasonables: Reasonable[] = await this.answerAndFollowUp(questionQuota, config);
 
             return reasonables;
         } else {
-            const reasonable: Reasonable = await this.answerDeterministically();
+            const reasonable: Reasonable = await this.answerDeterministically(config);
 
             return [reasonable];
         }
@@ -57,19 +51,20 @@ export class Questionable implements Reasonable {
      *
      * @returns The answer and follow-up questions.
      */
-    private async answerAndFollowUp(questionQuota: number): Promise<Reasonable[]> {
+    private async answerAndFollowUp(questionQuota: number, config: ReasoningConfig): Promise<Reasonable[]> {
+        const { llm } = config;
+
         const queries = [...this.queries, this.ask];
         try {
             // Parse completion JSON
-            const completion = await this.llm.answerAsCuriousFinancialAdvisor(this.ask, questionQuota);
+            const completion = await llm.answerAsCuriousFinancialAdvisor(this.ask, questionQuota);
 
             // Extract the deterministic answer...
             const answerAndQuestions: Reasonable[] = [
                 new Actionable({
-                    depth: this.depth + 1,
-                    // TODO(https://github.com/oh-my-goose/investment-chatbot/issues/7):
-                    //  Implement this
+                    ask: this.ask,
                     queries,
+                    depth: this.depth + 1,
                     answer: completion.answer,
                 }),
             ];
@@ -77,7 +72,6 @@ export class Questionable implements Reasonable {
             for (const question of completion.next_questions) {
                 answerAndQuestions.push(
                     new Questionable({
-                        llm: this.llm,
                         ask: question,
                         queries,
                         depth: this.depth + 1,
@@ -100,13 +94,14 @@ export class Questionable implements Reasonable {
      *
      * @returns An actionable that may or may not have the answer.
      */
-    private async answerDeterministically(): Promise<Actionable> {
+    private async answerDeterministically(_config: ReasoningConfig): Promise<Actionable> {
         const queries = [...this.queries, this.ask];
         // TODO(https://github.com/oh-my-goose/investment-chatbot/issues/10):
         //  Get answer from LLM
         return new Actionable({
-            depth: this.depth + 1,
+            ask: this.ask,
             queries,
+            depth: this.depth + 1,
             answer: 'deterministic answer',
         });
     }

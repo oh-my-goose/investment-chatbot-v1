@@ -3,25 +3,35 @@ import { ReasoningConfig } from '../configs';
 import { Reasonable } from '../reasonable';
 
 interface ActionableParams {
-    readonly depth: number;
     /**
-     * The question trace.
+     * The new question for LLM.
+     */
+    readonly ask: string;
+    /**
+     * The previous questions for LLM.
      */
     readonly queries: string[];
     /**
-     * The nullable answer to the end query of the queries.
+     * Step number of follow-up questions from the root question.
+     * Note: This is 1-based.
      */
-    readonly answer: string | null;
+    readonly depth: number;
+
+    readonly answer: string;
 }
 
 export class Actionable implements Reasonable {
-    readonly depth: number;
+    readonly ask: string;
     readonly queries: string[];
-    answer: string | null;
+    readonly depth: number;
+    // TODO: Enforce atomicity?
+    answer: string | null = null;
 
-    constructor({ depth, queries, answer }: ActionableParams) {
+    constructor({ ask, queries, depth, answer }: ActionableParams) {
+        this.ask = ask;
         this.depth = depth;
         this.queries = queries;
+
         this.answer = answer;
     }
 

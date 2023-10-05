@@ -15,10 +15,6 @@ export class Reasoner {
      * Global context.
      */
     private readonly config: ReasoningConfig;
-    /**
-     * The query breadcrumbs.
-     */
-    private queryTrace: string[] = [];
 
     constructor(
         config: ReasoningConfig = {
@@ -44,7 +40,7 @@ export class Reasoner {
         const completions: Completion[] = [];
 
         // Explore resolution graph (BFS)
-        const queue: Questionable[] = [new Questionable({ llm: this.config.llm, ask: query, queries: [], depth: 1 })];
+        const queue: Questionable[] = [new Questionable({ ask: query, queries: [], depth: 1 })];
         const visited: Set<string> = new Set([query]);
         while (queue.length > 0) {
             const node = queue.shift()!;
