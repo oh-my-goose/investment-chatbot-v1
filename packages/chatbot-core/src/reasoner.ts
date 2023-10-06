@@ -3,8 +3,10 @@ import { OpenAI } from 'langchain/llms/openai';
 import { Completion } from './completion';
 import { ReasoningConfig } from './configs';
 import { LLM } from './llm';
-import { Actionable } from './reasonables/actionable';
-import { Questionable } from './reasonables/questionable';
+import { Actionable, isActionable } from './reasonables/actionable';
+import { Questionable, isQuestionable } from './reasonables/questionable';
+import { Reasonable } from './reasonable';
+import { promiseAllInFlat } from './utils';
 
 /**
  * Reasoner that takes a user question and output a compltion list. The output
@@ -14,11 +16,11 @@ export class Reasoner {
     /**
      * Global context.
      */
-    private readonly config: ReasoningConfig;
+    protected readonly config: ReasoningConfig;
     /**
      * The query breadcrumbs.
      */
-    private queryTrace: string[] = [];
+    protected queryTrace: string[] = [];
 
     constructor(
         config: ReasoningConfig = {
@@ -65,5 +67,32 @@ export class Reasoner {
         }
 
         return completions;
+    }
+}
+
+export class AsyncReasoner extends Reasoner {
+    public async reason(query: string): Promise<Completion[]> {
+        return this.traverse(new Questionable({ llm: this.config.llm, ask: query, queries: [], depth: 1 }));
+    }
+
+    private triage(reasonables: Reasonable[]) {
+        const actionable = reasonables.find(isActionable);
+        const questionables = reasonables.filter(isQuestionable);
+        return {
+            actionable,
+            questionables,
+        };
+    }
+
+    private async traverse(questionable: Questionable): Promise<Completion[]> {
+        return questionable.question(this.config).then(async (reasonables) => {
+            const { actionable, questionables } = this.triage(reasonables);
+            const ansCompletion = actionable ? [await actionable.action(this.config)] : [];
+            const nestedSubCompletions = questionables.map((q) => this.traverse(q));
+            return promiseAllInFlat(nestedSubCompletions).then((flatSubCompletions) => [
+                ...ansCompletion,
+                ...flatSubCompletions,
+            ]);
+        });
     }
 }
