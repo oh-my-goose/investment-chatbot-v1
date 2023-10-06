@@ -71,7 +71,7 @@ export class AsyncReasoner extends Reasoner {
         return this.traverse(new Questionable({ ask: query, queries: [], depth: 1 }));
     }
 
-    private triage(reasonables: Reasonable[]) {
+    private triage(reasonables: Reasonable[]): { actionable?: Actionable; questionables: Questionable[] } {
         const actionable = reasonables.find(isActionable);
         const questionables = reasonables.filter(isQuestionable);
         return {
@@ -81,14 +81,20 @@ export class AsyncReasoner extends Reasoner {
     }
 
     private async traverse(questionable: Questionable): Promise<Completion[]> {
-        return questionable.question(this.config).then(async (reasonables) => {
-            const { actionable, questionables } = this.triage(reasonables);
-            const ansCompletion = actionable ? [await actionable.action(this.config)] : [];
-            const nestedSubCompletions = questionables.map((q) => this.traverse(q));
-            return promiseAllInFlat(nestedSubCompletions).then((flatSubCompletions) => [
-                ...ansCompletion,
-                ...flatSubCompletions,
-            ]);
-        });
+        return (
+            questionable
+                .question(this.config)
+                // prettier-ignore
+                .then(async (reasonables) => {
+                    const { actionable, questionables } = this.triage(reasonables);
+                    const ansCompletion = actionable ? [await actionable.action(this.config)] : [];
+                    const nestedSubCompletions = questionables.map((q) => this.traverse(q));
+                    return (
+                        promiseAllInFlat(nestedSubCompletions)
+                            // prettier-ignore
+                            .then((flatSubCompletions) => [...ansCompletion, ...flatSubCompletions])
+                    );
+                })
+        );
     }
 }
