@@ -53,3 +53,7 @@ export class Actionable implements Reasonable {
         return this.queries[this.queries.length - 1];
     }
 }
+
+export function isActionable(input: any): input is Actionable {
+    return input instanceof Actionable;
+}

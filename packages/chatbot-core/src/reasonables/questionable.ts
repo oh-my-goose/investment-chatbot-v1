@@ -100,3 +100,7 @@ export class Questionable implements Reasonable {
         });
     }
 }
+
+export function isQuestionable(input: any): input is Questionable {
+    return input instanceof Questionable;
+}
