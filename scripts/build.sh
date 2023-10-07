@@ -11,7 +11,10 @@ if [ "_$use" = "_nx" ]; then
 elif [ "_$use" = "_npm" ]; then
   set -x
   npm run build --workspaces --if-present
+elif [ "_$use" = "_pnpm" ]; then
+  set -x
+  pnpm run -r build
 else
-  echo "Unsupported USE value: ${use}"
+  echo "Unsupported USE value: ${use} (choose: nx, npm, pnpm)"
   exit 1
 fi
