@@ -1,10 +1,11 @@
 import { Completion } from '../completion';
 import { ReasoningConfig } from '../configs';
+import { LLM } from '../llm';
 import { Reasonable } from '../reasonable';
 
 interface ActionableParams {
     /**
-     * The new question for LLM.
+     * The question to be resolved.
      */
     readonly ask: string;
     /**
@@ -22,35 +23,22 @@ export class Actionable implements Reasonable {
     readonly ask: string;
     readonly queries: string[];
     readonly depth: number;
-    // TODO: Enforce atomicity?
-    answer: string | null = 'deterministic answer';
 
     constructor({ ask, queries, depth }: ActionableParams) {
         this.ask = ask;
-        this.depth = depth;
         this.queries = queries;
+        this.depth = depth;
     }
 
     public async action(
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         config: ReasoningConfig,
     ): Promise<Completion> {
-        if (this.answer === null) {
-            // TODO(https://github.com/oh-my-goose/investment-chatbot/issues/):
-            //  Will use Langchain Router feature for null answer!
-            throw new Error(`WIP`);
-        } else {
-            return new Completion(
-                // TODO(https://github.com/oh-my-goose/investment-chatbot/issues/7):
-                //  Fix query traces.
-                this.queries,
-                this.answer,
-            );
-        }
-    }
+        const { llm } = config;
+        const answer = await llm.answerAsDeterministicFinancialAdvisor(this.ask);
 
-    private lastQuery(): string {
-        return this.queries[this.queries.length - 1];
+        const fullQueries = [...this.queries, this.ask];
+        return new Completion(fullQueries, answer);
     }
 }
 

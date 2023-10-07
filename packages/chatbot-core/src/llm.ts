@@ -42,4 +42,10 @@ export class LLM {
 
         return completion;
     }
+
+    async answerAsDeterministicFinancialAdvisor(query: string): Promise<string> {
+        // TODO(https://github.com/oh-my-goose/investment-chatbot/issues/10):
+        //  Get answer from LLM
+        return Promise.resolve('deterministic answer');
+    }
 }
