@@ -3,9 +3,10 @@ import { OpenAI } from 'langchain/llms/openai';
 import { Completion } from './completion';
 import { ReasoningConfig } from './configs';
 import { LLM } from './llm';
-import { Actionable, isActionable } from './reasonables/actionable';
-import { Questionable, isQuestionable } from './reasonables/questionable';
 import { Reasonable } from './reasonable';
+import { Actionable, isActionable } from './reasonables/actionable';
+import { Answerable } from './reasonables/answerable';
+import { Questionable, isQuestionable } from './reasonables/questionable';
 import { promiseAllInFlat } from './utils';
 
 /**
@@ -57,6 +58,9 @@ export class Reasoner {
                     visited.add(reasonable.ask);
                 } else if (reasonable instanceof Actionable) {
                     const completion = await reasonable.action(this.config);
+                    completions.push(completion);
+                } else if (reasonable instanceof Answerable) {
+                    const completion = await reasonable.answer(this.config);
                     completions.push(completion);
                 }
             }

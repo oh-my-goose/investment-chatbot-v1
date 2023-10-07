@@ -2,6 +2,7 @@ import { ReasoningConfig } from '../configs';
 import { LLM } from '../llm';
 import { Reasonable } from '../reasonable';
 import { Actionable } from './actionable';
+import { Answerable } from './answerable';
 
 interface QuestionableParams {
     /**
@@ -61,8 +62,8 @@ export class Questionable implements Reasonable {
 
             // Extract the deterministic answer...
             const answerAndQuestions: Reasonable[] = [
-                new Actionable({
-                    ask: this.ask,
+                new Answerable({
+                    answer: completion.answer,
                     queries,
                     depth: this.depth + 1,
                 }),
@@ -92,10 +93,9 @@ export class Questionable implements Reasonable {
      * @returns An actionable that will provider a deterministic answer.
      */
     private async answerDeterministically(_config: ReasoningConfig): Promise<Actionable> {
-        const queries = [...this.queries, this.ask];
         return new Actionable({
             ask: this.ask,
-            queries,
+            queries: this.queries,
             depth: this.depth + 1,
         });
     }

@@ -4,8 +4,7 @@ import { ReasoningConfig } from '../src/configs';
 import { LLM } from '../src/llm';
 
 const llm = new LLM({ openAI: jest.fn() as unknown as OpenAI });
-const mockedLlmEntry = jest.spyOn(llm, 'answerAsCuriousFinancialAdvisor');
-mockedLlmEntry.mockImplementation((query, questionQuota) => {
+jest.spyOn(llm, 'answerAsCuriousFinancialAdvisor').mockImplementation((query, questionQuota) => {
     const answer = `${query}-ans`;
     const questions = Array.from({ length: questionQuota }).map((_, idx) => {
         return `${query}-q${idx + 1}`;
@@ -14,6 +13,10 @@ mockedLlmEntry.mockImplementation((query, questionQuota) => {
         answer,
         next_questions: questions,
     });
+});
+jest.spyOn(llm, 'answerAsDeterministicFinancialAdvisor').mockImplementation((_query) => {
+    const answer = `deterministic answer`;
+    return Promise.resolve(answer);
 });
 
 describe(`Reasoner`, () => {
@@ -41,7 +44,7 @@ describe(`Reasoner`, () => {
             maxExploreDepth,
             llm,
         };
-        const answerOfDepth0 = DETERMINISTIC_ANSWER;
+        const answerOfDepth0 = `${INITIAL_QUESTION}-ans`;
         const answerOfDepth1 = Array(2).fill(DETERMINISTIC_ANSWER);
         const expected = [answerOfDepth0, ...answerOfDepth1];
 
@@ -57,8 +60,12 @@ describe(`Reasoner`, () => {
             maxExploreDepth,
             llm,
         };
-        const answerOfDepth0 = DETERMINISTIC_ANSWER;
-        const answerOfDepth1 = Array(3).fill(DETERMINISTIC_ANSWER);
+        const answerOfDepth0 = `${INITIAL_QUESTION}-ans`;
+        const answerOfDepth1 = Array(3)
+            .fill(`${INITIAL_QUESTION}-q-ans`)
+            .map((a: string, idx) => {
+                return a.replace('-q-', `-q${idx + 1}-`);
+            });
         const answerOfDepth2 = [
             ...Array(2).fill(DETERMINISTIC_ANSWER),
             ...Array(2).fill(DETERMINISTIC_ANSWER),
