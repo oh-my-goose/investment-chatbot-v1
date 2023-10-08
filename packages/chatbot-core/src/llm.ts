@@ -1,6 +1,10 @@
+import { initializeAgentExecutorWithOptions } from 'langchain/agents';
 import { LLMChain } from 'langchain/chains';
+import { ChatOpenAI } from 'langchain/chat_models/openai';
 import { OpenAI } from 'langchain/llms/openai';
 import { ChatPromptTemplate, HumanMessagePromptTemplate, SystemMessagePromptTemplate } from 'langchain/prompts';
+import { SerpAPI } from 'langchain/tools';
+import { Calculator } from 'langchain/tools/calculator';
 import { BEING_CURIOUS_PROMPT, FINANCIAL_ADVISOR_PROMPT, FRIENDLY_WORDS_PROMPT } from './prompts';
 
 /**
@@ -44,8 +48,15 @@ export class LLM {
     }
 
     async answerAsDeterministicFinancialAdvisor(query: string): Promise<string> {
-        // TODO(https://github.com/oh-my-goose/investment-chatbot/issues/10):
-        //  Get answer from LLM
-        return Promise.resolve('deterministic answer');
+        const tools = [new Calculator(), new SerpAPI()];
+        const chat = new ChatOpenAI({ modelName: 'gpt-4', temperature: 0 });
+
+        const executor = await initializeAgentExecutorWithOptions(tools, chat, {
+            agentType: 'openai-functions',
+            verbose: true,
+        });
+
+        const result = await executor.run(query);
+        return result;
     }
 }
