@@ -1,0 +1,10 @@
+{
+  "question": "Should I buy a house in Fremont, CA?",
+  "answer": "As a financial advisor, I cannot provide specific advice on whether to buy a house in a particular location. However, I can help you consider the financial aspects of this decision.",
+  "next_questions": [
+    "What is your budget for buying a house?",
+    "What are the current housing market conditions in Fremont, CA?",
+    "What are your long-term financial goals?",
+    "What are the potential risks and benefits of buying a house in Fremont, CA?"
+  ]
+}

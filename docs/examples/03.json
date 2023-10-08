@@ -1,0 +1,9 @@
+{
+  "question": "Should I invest in stock?",
+  "answer": "Investing in stocks can be a good way to grow your wealth over the long term, but it also comes with risks.",
+  "next_questions": [
+    "What are the potential benefits of investing in stocks?",
+    "What are the risks associated with investing in stocks?",
+    "How can I determine if a stock is a good investment?"
+  ]
+}
