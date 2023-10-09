@@ -5,7 +5,7 @@ import { LLM } from '../src/llm';
 
 const llm = new LLM({ openAI: jest.fn() as unknown as OpenAI });
 jest.spyOn(llm, 'answerAsCuriousFinancialAdvisor').mockImplementation((query, questionQuota) => {
-    const answer = `${query}-ans`;
+    const answer = `for debugging only`;
     const questions = Array.from({ length: questionQuota }).map((_, idx) => {
         return `${query}-q${idx + 1}`;
     });
@@ -44,9 +44,9 @@ describe(`Reasoner`, () => {
             maxExploreDepth,
             llm,
         };
-        const answerOfDepth0 = `${INITIAL_QUESTION}-ans`;
-        const answerOfDepth1 = Array(2).fill(DETERMINISTIC_ANSWER);
-        const expected = [answerOfDepth0, ...answerOfDepth1];
+        const answerOfDepth0: string[] = [];
+        const answerOfDepth1: string[] = Array(2).fill(DETERMINISTIC_ANSWER);
+        const expected = [...answerOfDepth0, ...answerOfDepth1];
 
         const reasoner = new Reasoner(config);
         const completions = await reasoner.reason(INITIAL_QUESTION);
@@ -60,18 +60,14 @@ describe(`Reasoner`, () => {
             maxExploreDepth,
             llm,
         };
-        const answerOfDepth0 = `${INITIAL_QUESTION}-ans`;
-        const answerOfDepth1 = Array(3)
-            .fill(`${INITIAL_QUESTION}-q-ans`)
-            .map((a: string, idx) => {
-                return a.replace('-q-', `-q${idx + 1}-`);
-            });
-        const answerOfDepth2 = [
+        const answerOfDepth0: string[] = [];
+        const answerOfDepth1: string[] = [];
+        const answerOfDepth2: string[] = [
             ...Array(2).fill(DETERMINISTIC_ANSWER),
             ...Array(2).fill(DETERMINISTIC_ANSWER),
             ...Array(2).fill(DETERMINISTIC_ANSWER),
         ];
-        const expected = [answerOfDepth0, ...answerOfDepth1, ...answerOfDepth2];
+        const expected = [...answerOfDepth0, ...answerOfDepth1, ...answerOfDepth2];
 
         const reasoner = new Reasoner(config);
         const completions = await reasoner.reason(INITIAL_QUESTION);
@@ -100,7 +96,7 @@ describe(`Reasoner`, () => {
             [...queriesOfDepth1[2], 'question-q3-q1'],
             [...queriesOfDepth1[2], 'question-q3-q2'],
         ];
-        const expected = [queriesOfDepth0, ...queriesOfDepth1, ...queriesOfDepth2];
+        const expected = [...queriesOfDepth2];
 
         const reasoner = new Reasoner(config);
         const completions = await reasoner.reason(INITIAL_QUESTION);

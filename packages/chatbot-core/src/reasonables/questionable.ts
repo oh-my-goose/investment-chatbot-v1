@@ -60,24 +60,19 @@ export class Questionable implements Reasonable {
             // Parse completion JSON
             const completion = await llm.answerAsCuriousFinancialAdvisor(this.ask, questionQuota);
 
-            // Extract the deterministic answer...
-            const answerAndQuestions: Reasonable[] = [
-                new Answerable({
-                    answer: completion.answer,
-                    queries,
-                    depth: this.depth + 1,
-                }),
-            ];
-            // followed by underlying questions
-            for (const question of completion.next_questions) {
-                answerAndQuestions.push(
-                    new Questionable({
-                        ask: question,
-                        queries,
-                        depth: this.depth + 1,
-                    }),
-                );
+            const answerAndQuestions: Reasonable[] = [];
+            if (completion.next_questions.length > 0) {
+                for (const question of completion.next_questions) {
+                    answerAndQuestions.push(
+                        new Questionable({
+                            ask: question,
+                            queries,
+                            depth: this.depth + 1,
+                        }),
+                    );
+                }
             }
+            // followed by underlying questions
 
             return answerAndQuestions;
         } catch (error) {
