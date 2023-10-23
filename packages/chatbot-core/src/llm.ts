@@ -42,7 +42,8 @@ export class LLM {
         const rawCompletion: string = await chain.run({});
 
         // Parse completion JSON
-        const completion = JSON.parse(rawCompletion) as AnswerAndFollowUps;
+        // TODO handle empty/non-json response properly
+        const completion = (JSON.parse(rawCompletion) as any[])[0] as AnswerAndFollowUps;
 
         return completion;
     }
@@ -51,6 +52,7 @@ export class LLM {
         const tools = [new Calculator(), new SerpAPI()];
         const chat = new ChatOpenAI({ modelName: 'gpt-4', temperature: 0 });
 
+        // TODO setup SERPAPI_API_KEY
         const executor = await initializeAgentExecutorWithOptions(tools, chat, {
             agentType: 'openai-functions',
             verbose: true,
