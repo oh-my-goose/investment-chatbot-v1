@@ -1,11 +1,19 @@
+export function getApiKeySafely(): string | never {
+    return getValueSafely('OPENAI_API_KEY');
+}
+
+export function getSrpApiKeySafely(): string | never {
+    return getValueSafely('SERPAPI_API_KEY');
+}
+
 /**
- * Get OPEN API KEY from env variable.
+ * Get key` from env variable.
  * Fail if it's not resolvable.
  */
-export function getApiKeySafely(): string | never {
-    const KEY = process.env.OPENAI_API_KEY;
+function getValueSafely(key: string): string | never {
+    const KEY = process.env[key];
     if (!KEY) {
-        throw new Error(`Set OPENAI_API_KEY first.`);
+        throw new Error(`Set ${key} first.`);
     }
     return KEY;
 }

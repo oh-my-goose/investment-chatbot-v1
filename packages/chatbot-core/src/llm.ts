@@ -6,6 +6,7 @@ import { ChatPromptTemplate, HumanMessagePromptTemplate, SystemMessagePromptTemp
 import { SerpAPI } from 'langchain/tools';
 import { Calculator } from 'langchain/tools/calculator';
 import { BEING_CURIOUS_PROMPT, FINANCIAL_ADVISOR_PROMPT, FRIENDLY_WORDS_PROMPT } from './prompts';
+import { getSrpApiKeySafely } from '@llama-flock/common-utils';
 
 /**
  * LLM constructor key-value parameters.
@@ -49,9 +50,8 @@ export class LLM {
     }
 
     async answerAsDeterministicFinancialAdvisor(query: string): Promise<string> {
-        const tools = [new Calculator(), new SerpAPI()];
+        const tools = [new Calculator(), new SerpAPI(getSrpApiKeySafely())];
         const chat = new ChatOpenAI({ modelName: 'gpt-4', temperature: 0 });
-
         // TODO setup SERPAPI_API_KEY
         const executor = await initializeAgentExecutorWithOptions(tools, chat, {
             agentType: 'openai-functions',
