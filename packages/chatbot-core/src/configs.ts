@@ -14,6 +14,10 @@ export interface ReasoningConfig {
      * distance of progress.
      */
     readonly maxExploreDepth: number;
+    /**
+     * Instead of making an actual serp api call, make a fake response, if the flat is set
+     */
+    readonly suppressSerpCall?: boolean;
 
     // TODO: Inject a factory method that could build Questionable and Actionable.
 }

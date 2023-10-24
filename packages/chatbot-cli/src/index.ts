@@ -12,21 +12,24 @@ import { resolve } from 'path';
 const COMMAND = resolve('dist/index.js');
 const USAGE = `
 USAGE:
-    ${COMMAND} [--depth <depth>] --question <question>
+    ${COMMAND} [--depth <depth>] --question <question> [--serp <serp>]
 
 Options:
     -d --depth=<depth>          Number of level for question derivation [default: 3]
     -q --question=<question>    The initial question
+    -s --serp                   Allow making serp api calls [default: true]
 `;
 interface MyOptions extends CommandOptions {
     depth: number;
     question: string;
+    serp: boolean;
 }
 interface MyArguments extends CommandArguments {}
 type MyCommandObject = CommandObject<MyArguments, MyOptions>;
 (async function () {
     const cli = docoptCommandParser<MyCommandObject>(USAGE);
-    const { depth, question } = cli.options;
+    console.log({ cli });
+    const { depth, question, serp } = cli.options;
     const openAI = new OpenAI({
         openAIApiKey: getApiKeySafely(),
     });
@@ -34,6 +37,7 @@ type MyCommandObject = CommandObject<MyArguments, MyOptions>;
     const maxExploreDepth = depth;
     const config: ReasoningConfig = {
         maxExploreDepth,
+        suppressSerpCall: !serp,
         llm,
     };
     const reasoner = new Reasoner(config);

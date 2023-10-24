@@ -88,10 +88,21 @@ function parseOptions(docOptions: DocOpt): CommandOptions {
         const matches = key.match(REGEXP_CMD_OPT);
         if (matches) {
             const normedKey = Case.camel(matches[1]);
-            normed[normedKey] = value;
+            normed[normedKey] = typeMatch(value);
         }
         return normed;
     }, {});
+}
+
+function typeMatch(value: any): any {
+    if (['true', 'false'].includes(value)) {
+        return 'true' === value ? true : false;
+    }
+    const integer = parseInt(value, 10);
+    if (`${integer}` === value) {
+        return integer;
+    }
+    return value;
 }
 
 function getSubCommand(args: CommandArguments): string {

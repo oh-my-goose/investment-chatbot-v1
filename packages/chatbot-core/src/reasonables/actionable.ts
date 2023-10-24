@@ -35,7 +35,9 @@ export class Actionable implements Reasonable {
         config: ReasoningConfig,
     ): Promise<Completion> {
         const { llm } = config;
-        const answer = await llm.answerAsDeterministicFinancialAdvisor(this.ask);
+        const answer = config.suppressSerpCall
+            ? `(dummy response)`
+            : await llm.answerAsDeterministicFinancialAdvisor(this.ask);
 
         const fullQueries = [...this.queries, this.ask];
         return new Completion(fullQueries, answer);
