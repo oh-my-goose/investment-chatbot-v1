@@ -1,21 +1,36 @@
-import { getApiKeySafely } from '@llama-flock/common-utils';
+import {
+    getApiKeySafely,
+    docoptCommandParser,
+    CommandOptions,
+    CommandArguments,
+    CommandObject,
+} from '@llama-flock/common-utils';
 import { OpenAI } from 'langchain/llms/openai';
 import { LLM, ReasoningConfig, Reasoner } from '@llama-flock/chatbot-core';
 
+const COMMAND = 'index.js';
+const USAGE = `USAGE:
+    ${COMMAND} [--depth <depth>] --question <question>`;
+interface MyOptions extends CommandOptions {
+    depth: number;
+    question: string;
+}
+interface MyArguments extends CommandArguments {}
+type MyCommandObject = CommandObject<MyArguments, MyOptions>;
 (async function () {
-    const [, , ...rest] = process.argv;
-    const question = rest.join(' ');
+    const cli = docoptCommandParser<MyCommandObject>(USAGE);
+    const { depth, question } = cli.options;
     const openAI = new OpenAI({
         openAIApiKey: getApiKeySafely(),
     });
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     const llm = new LLM({ openAI });
-    const maxExploreDepth = 3;
+    const maxExploreDepth = depth;
     const config: ReasoningConfig = {
         maxExploreDepth,
         llm,
     };
     const reasoner = new Reasoner(config);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const completions = await reasoner.reason(question);
     console.log({ completions });
 })().catch((e) => {

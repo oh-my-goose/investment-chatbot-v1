@@ -1,4 +1,4 @@
-import { getApiKeySafely } from '../src';
+import { getApiKeySafely } from '../src/env';
 
 describe(`getApiKeySafely`, () => {
     let saved = '';
