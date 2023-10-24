@@ -40,12 +40,33 @@ export class LLM {
 
         const llm = this.openAI;
         const chain = new LLMChain({ llm, prompt: combinedPrompt });
-        const rawCompletion: string = await chain.run({});
+        const rawResponse: string = await chain.run({});
 
-        // Parse completion JSON
-        // TODO handle empty/non-json response properly
-        const completion = (JSON.parse(rawCompletion) as any[])[0] as AnswerAndFollowUps;
-
+        let completion: AnswerAndFollowUps;
+        try {
+            const responses = JSON.parse(rawResponse) as any[];
+            completion = responses[0];
+            // TODO validate by json schema
+            if (!completion.answer || !Array.isArray(completion.next_questions)) {
+                throw new Error('invalid result');
+            }
+        } catch (e) {
+            completion = {
+                answer: '(empty response)',
+                next_questions: [],
+            };
+            console.warn(
+                `(Failed to parse langchain response. Return a dummy completion.)\n${JSON.stringify(
+                    {
+                        query,
+                        rawResponse,
+                        completion,
+                    },
+                    null,
+                    2,
+                )}`,
+            );
+        }
         return completion;
     }
 
