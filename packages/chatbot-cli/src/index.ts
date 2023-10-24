@@ -7,10 +7,16 @@ import {
 } from '@llama-flock/common-utils';
 import { OpenAI } from 'langchain/llms/openai';
 import { LLM, ReasoningConfig, Reasoner } from '@llama-flock/chatbot-core';
+import { resolve } from 'path';
 
-const COMMAND = 'index.js';
-const USAGE = `USAGE:
-    ${COMMAND} [--depth <depth>] --question <question>`;
+const COMMAND = resolve('dist/index.js');
+const USAGE = `
+USAGE:
+    ${COMMAND} [--depth <depth>] --question <question>
+
+Options:
+    -d --depth=<depth>     Number of level in question derivation [default: 3]
+`;
 interface MyOptions extends CommandOptions {
     depth: number;
     question: string;
@@ -34,6 +40,7 @@ type MyCommandObject = CommandObject<MyArguments, MyOptions>;
     const completions = await reasoner.reason(question);
     console.log({ completions });
 })().catch((e) => {
+    console.log(USAGE);
     console.log(e);
     process.exit(1);
 });
