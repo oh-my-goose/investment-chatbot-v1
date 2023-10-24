@@ -15,7 +15,8 @@ USAGE:
     ${COMMAND} [--depth <depth>] --question <question>
 
 Options:
-    -d --depth=<depth>     Number of level in question derivation [default: 3]
+    -d --depth=<depth>          Number of level for question derivation [default: 3]
+    -q --question=<question>    The initial question
 `;
 interface MyOptions extends CommandOptions {
     depth: number;
