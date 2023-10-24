@@ -4,7 +4,13 @@
     "description": "",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
-    "devDependencies": {},
+    "devDependencies": {
+        "ts-jest": "^29.1.1",
+        "typescript": "^5.2.2"
+    },
+    "dependencies": {
+        "@llama-flock/chatbot-core": "~0.0.1"
+    },
     "scripts": {
         "start": "node ./dist/index",
         "build": "tsc"
