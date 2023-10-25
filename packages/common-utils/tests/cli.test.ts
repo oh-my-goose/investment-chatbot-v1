@@ -36,7 +36,7 @@ describe(`docoptCommandParser`, () => {
             ${COMMAND} answer [--depth <depth>] --question <question>`;
         const parsed = docoptCommandParser<MyCommandObject>(USAGE);
         expect(parsed.arguments.answer).toBeTruthy();
-        expect(parsed.options.depth).toBe('3');
+        expect(parsed.options.depth).toBe(3);
         expect(parsed.options.question).toBe('how to...');
         expect(parsed.escaped).toBe('blah');
     });
@@ -47,7 +47,7 @@ describe(`docoptCommandParser`, () => {
             ${COMMAND} answer [--depth <depth>] --question <question>`;
         const parsed = docoptSubCommandParser<MySubCommandObject>(USAGE);
         expect(parsed.subCommand).toBe('answer');
-        expect(parsed.options.depth).toBe('3');
+        expect(parsed.options.depth).toBe(3);
         expect(parsed.options.question).toBe('how to...');
         expect(parsed.escaped).toBe('blah');
     });
@@ -63,7 +63,7 @@ describe(`docoptCommandParser`, () => {
         `;
         const parsed = docoptSubCommandParser<MySubCommandObject>(USAGE);
         expect(parsed.subCommand).toBe('answer');
-        expect(parsed.options.depth).toBe('3');
+        expect(parsed.options.depth).toBe(3);
         expect(parsed.options.question).toBe('how to...');
         expect(parsed.escaped).toBe('blah');
     });
