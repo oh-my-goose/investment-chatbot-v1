@@ -42,16 +42,16 @@ export class LLM {
         const chain = new LLMChain({ llm, prompt: combinedPrompt });
         const rawResponse: string = await chain.run({});
 
-        let completion: AnswerAndFollowUps;
+        let response: AnswerAndFollowUps;
         try {
             const responses = JSON.parse(rawResponse) as any[];
-            completion = responses[0];
+            response = responses[0];
             // TODO validate by json schema
-            if (!completion.answer || !Array.isArray(completion.next_questions)) {
+            if (!response.answer || !Array.isArray(response.next_questions)) {
                 throw new Error('invalid result');
             }
         } catch (e) {
-            completion = {
+            response = {
                 answer: '(empty response)',
                 next_questions: [],
             };
@@ -60,14 +60,14 @@ export class LLM {
                     {
                         query,
                         rawResponse,
-                        completion,
+                        completion: response,
                     },
                     null,
                     2,
                 )}`,
             );
         }
-        return completion;
+        return response;
     }
 
     async answerAsDeterministicFinancialAdvisor(query: string): Promise<string> {
