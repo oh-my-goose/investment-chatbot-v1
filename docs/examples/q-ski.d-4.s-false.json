@@ -1,0 +1,42 @@
+{
+  "how to become a good skier?": {
+    "What are the best ski resorts to learn how to ski?": {
+      "What are the prices like at these resorts?": {
+        "What kinds of amenities are offered at the resorts?": {
+          "(dummy response)": {}
+        },
+        "What locations are the resorts located in?": {
+          "(dummy response)": {}
+        }
+      },
+      "Are there any beginner-friendly ski trails at these resorts?": {
+        "What are the names of the beginner-friendly trails?": {
+          "(dummy response)": {}
+        },
+        "Are there any ski schools or instructors available to teach beginners?": {
+          "(dummy response)": {}
+        }
+      }
+    },
+    "What equipment do I need to ski?": {
+      "What type of boots should I get?": {
+        "What type of activities will you be doing in the boots?": {
+          "(dummy response)": {}
+        },
+        "What style do you prefer?": {
+          "(dummy response)": {}
+        }
+      }
+    },
+    "What is the best way to get comfortable skiing on black diamond runs?": {
+      "What should I look for in a ski instructor?": {
+        "What certifications do ski instructors need?": {
+          "(dummy response)": {}
+        },
+        "How much experience should my ski instructor have?": {
+          "(dummy response)": {}
+        }
+      }
+    }
+  }
+}

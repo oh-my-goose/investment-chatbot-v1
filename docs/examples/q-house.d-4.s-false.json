@@ -1,0 +1,22 @@
+{
+  "Should I buy a house in Fremont, CA?": {
+    "What are the tax implications of buying a house in Fremont, CA?": {
+      "What is the income tax rate in Fremont, CA?": {
+        "Are there any other taxes I should be aware of in Fremont, CA?": {
+          "(dummy response)": {}
+        },
+        "What is the maximum marginal tax rate I could pay in Fremont, CA?": {
+          "(dummy response)": {}
+        }
+      },
+      "Are there any federal laws that provide deductions for mortgage interest and property taxes?": {
+        "What are the eligibility requirements for the deductions?": {
+          "(dummy response)": {}
+        },
+        "How much of the mortgage interest and property taxes can be deducted?": {
+          "(dummy response)": {}
+        }
+      }
+    }
+  }
+}

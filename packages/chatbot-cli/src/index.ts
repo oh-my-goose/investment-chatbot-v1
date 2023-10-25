@@ -58,7 +58,7 @@ type MyCommandObject = CommandObject<MyArguments, MyOptions>;
     const output = JSON.stringify(logger.dump(), null, 2);
     console.log(output);
     if (record) {
-        writeFileSync(`${findUpForGitRoot()}/docs/examples/${record}.json`, output);
+        writeFileSync(`${findUpForGitRoot()}/docs/examples/q-${record}.d-${depth}.s-${serp}.json`, output);
     }
 })().catch((e) => {
     console.log(USAGE);
